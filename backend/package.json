@@ -1,0 +1,33 @@
+{
+  "name": "loops-challenge",
+  "version": "1.0.0",
+  "description": "This Loops Digital full stack code challenge",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon --watch '*.js' src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HassanRazaMuhammadTufail/loops-challenge.git"
+  },
+  "author": "Hassan Raza",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HassanRazaMuhammadTufail/loops-challenge/issues"
+  },
+  "homepage": "https://github.com/HassanRazaMuhammadTufail/loops-challenge#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-validator": "^6.4.1",
+    "migrate": "^1.6.2",
+    "mongoose": "^5.9.12"
+  },
+  "devDependencies": {
+    "babel-preset-es2015": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "nodemon": "^2.0.3"
+  }
+}
