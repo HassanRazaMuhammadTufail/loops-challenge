@@ -2,16 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Grid, Paper } from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles';
 import {Redirect} from 'react-router-dom';
-// import '../css/home.css';
-// import '../App.css';
 
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
     },
     paper: {
-        // height: 140,
-        // width: '100%',
         padding: theme.spacing(5),
 
     },
@@ -24,7 +20,6 @@ export const Home = () => {
     const [products, setProducts] = useState([]);
     const [redirect, setRedirect] = useState();
     const [confirmProduct, setConfirmProduct] = useState();
-    console.log(products)
     useEffect(() => {
         getProducts();
     }, []);
@@ -33,13 +28,11 @@ export const Home = () => {
             .then(response => response.json())
             .then(data => {
                 if (data.data) {
-                    console.log(data.data)
                     setProducts(data.data);
                 }
             });
     };
     const clickHandler = (product) => {
-        console.log(product)
         setConfirmProduct(product);
         setRedirect('/order')
 

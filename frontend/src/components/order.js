@@ -6,6 +6,8 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
 import { Redirect } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
@@ -37,11 +39,21 @@ export const Order = (props) => {
     const [mobile, setMobile] = useState('');
     const [address, setAddress] = useState('');
     const [error, setError] = useState('');
+    const [snackbar, setSnackbar] = useState(false);
+    const [snackbarText, setSnackbarText] = useState('');
 
     console.log(props, name)
     if (!props.location.state) {
         return <Redirect to='/' />
     }
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setSnackbar(false);
+    };
     const handleSubmit = (e) => {
         e.preventDefault();
         let obj = {};
@@ -54,6 +66,7 @@ export const Order = (props) => {
         } else if (!address) {
             setError('Address is Required');
         } else {
+            setError('')
             obj = {
                 productID: props.location.state.confirmProduct._id,
                 name,
@@ -61,21 +74,23 @@ export const Order = (props) => {
                 address,
                 email,
             }
+            fetch('http://localhost:8000/', {
+                method: 'POST',
+                headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+                body: JSON.stringify(obj)
+            }).then(response => response.json())
+                .then(data => {
+                    setSnackbar(true);
+                    setSnackbarText(data.message)
+                }).catch((error) => {
+                    setSnackbar(true);
+                    setSnackbarText(error.message)
+                });
         }
-        console.log(obj)
-        fetch('http://localhost:8000/',{
-            method: 'POST',
-            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-            body: JSON.stringify(obj)
-        }).then(response => response.json())
-        .then(data => {
-          console.log('Success:', data);
-        }).catch((error) => {
-            console.error('Error:', error);
-          });
     }
     return (
         <Grid container component="main" className={classes.root}>
+
             <CssBaseline />
             <Grid item sm={6} component={Paper} elevation={6} square>
                 <div className={classes.paper}>
@@ -158,6 +173,23 @@ export const Order = (props) => {
                     </form>
                 </div>
             </Grid>
+            <Snackbar
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                }}
+                open={snackbar}
+                autoHideDuration={6000}
+                onClose={handleClose}
+                message={snackbarText}
+                action={
+                    <React.Fragment>
+                        <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
+                            X
+                        </IconButton>
+                    </React.Fragment>
+                }
+            />
         </Grid>
     );
 }
